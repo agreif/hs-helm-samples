@@ -1,4 +1,4 @@
 hs-helm-samples
 ===============
 
-example games written with the Haskell Helm reactive game engine
+Example/small/test games written with the [Haskell](http://www.haskell.org/) [Helm](http://helm-engine.org) reactive game engine.
