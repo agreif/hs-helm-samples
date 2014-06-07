@@ -1,8 +1,8 @@
 random_sensor
 ===============
 
-Lets a red square move randomly around.
+Lets some squares move around randomly with different speed.
 
 Uses
 - `randomR` sensor to generate numbers in a range
-- `combine` sensor for groupung the `dx` and `dy` movement values
+- `combine` sensor for grouping the `dx` and `dy` movement values
