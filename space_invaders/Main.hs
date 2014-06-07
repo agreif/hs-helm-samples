@@ -1,20 +1,24 @@
 import FRP.Helm
 import qualified FRP.Helm.Window as Window
 import qualified FRP.Helm.Keyboard as Keyboard
+import FRP.Elerea.Simple
 
-data State = State {mx :: Double, my :: Double}
+data SpaceshipState = SpaceshipState {mx :: Double, my :: Double}
 
-step :: (Int, Int) -> State -> State
-step (dx, _) state = state {mx = mx state + realToFrac dx}
+createSpaceship :: Int -> SignalGen(Signal SpaceshipState)
+createSpaceship winHeight = spaceshipSignal
+  where state = SpaceshipState {mx = 0, my = realToFrac winHeight / 2 * 0.8}
+        spaceshipSignal = foldp moveSpaceship state Keyboard.arrows
 
-render :: State -> (Int, Int) -> Element
+moveSpaceship :: (Int, Int) -> SpaceshipState -> SpaceshipState
+moveSpaceship (dx, _) state = state {mx = mx state + realToFrac dx}
+
+render :: SpaceshipState -> (Int, Int) -> Element
 render state (w, h) = centeredCollage w h [move (mx state, my state) $ filled red $ square 64]
 
 main :: IO ()
 main = do
-  run config $ render <~ stepper ~~ Window.dimensions
+  run config $ render <~ (createSpaceship winHeight) ~~ Window.dimensions
   where config = defaultConfig {windowTitle = "space_invaders",
-                                windowDimensions = (w, h)}
-        (w, h) = (500, 500)
-        state = State {mx = 0, my = realToFrac h / 2 * 0.8}
-        stepper = foldp step state Keyboard.arrows
+                                windowDimensions = (winWidth, winHeight)}
+        (winWidth, winHeight) = (500, 500)
