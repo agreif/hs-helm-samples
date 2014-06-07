@@ -20,6 +20,6 @@ main = do
                                 windowDimensions = (500, 500)}
         state1 = State {mx = 0, my = -30, speed = 1, color = red}
         state2 = State {mx = 0, my = 30, speed = 2, color = blue}
-        state3 = State {mx = 0, my = 30, speed = 5, color = yellow}
+        state3 = State {mx = 0, my = 60, speed = 5, color = yellow}
         stepper state = foldp step state $ combine [randomR (-1, 1), randomR (-1, 1)]
         squares = combine [(stepper state1), (stepper state2), (stepper state3)]
