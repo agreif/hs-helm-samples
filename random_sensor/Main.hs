@@ -12,6 +12,8 @@ render state (w, h) = centeredCollage w h [move (mx state, my state) $ filled re
 
 main :: IO ()
 main = do
-  run defaultConfig $ render <~ stepper ~~ Window.dimensions
-  where state = State {mx = 0, my = 0}
+  run config $ render <~ stepper ~~ Window.dimensions
+  where config = defaultConfig {windowTitle = "random_sensor",
+                                windowDimensions = (500, 500)}
+        state = State {mx = 0, my = 0}
         stepper = foldp step state $ combine [randomR (-1, 1), randomR (-1, 1)]

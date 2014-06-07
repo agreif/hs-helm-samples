@@ -1,7 +1,6 @@
 import FRP.Helm
 import qualified FRP.Helm.Window as Window
 import qualified FRP.Helm.Keyboard as Keyboard
-import qualified FRP.Helm.Mouse as Mouse
 
 data State = State {mx :: Double, my :: Double}
 
@@ -24,9 +23,11 @@ render state1 state2 (w, h) =
                        move (mx state2, my state2) $ filled blue $ square 64]
 
 main :: IO ()
-main = run defaultConfig $ render <~ stepper1 ~~ stepper2 ~~ Window.dimensions
-  where state1 = State {mx = 0, my = 0}
-        state2 = State {mx = 0, my = 50}
+main = run config $ render <~ stepper1 ~~ stepper2 ~~ Window.dimensions
+  where config = defaultConfig {windowTitle = "keyboard_sensors",
+                                windowDimensions = (500, 500)}
+        state1 = State {mx = 0, my = 0}
+        state2 = State {mx = 0, my = 100}
         stepper1 = foldp step1 state1 Keyboard.arrows
         stepper2 = foldp step2 state2 Keyboard.keysDown
                            
