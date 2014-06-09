@@ -26,11 +26,18 @@ cannonSignal winHeight = signal
                 ly' = if laserFlying' then ly state + 1 else 0
 
 invaderSignal :: SignalGen(Signal [InvaderState])
-invaderSignal = combine signals
+invaderSignal = combine $ signals1 ++ signals2 ++ signals3 ++ signals4 ++ signals5
   where xposs = [-210, -180, -150, -120, -90, -60, -30, 0, 30, 60]
-        invader1Poss = map (\x -> (x, -100)) xposs
-        initialStates1 = map (\(x, y) -> InvaderState {ix = x, iy = y, stepsX = -2}) invader1Poss
-        signals = map (\state -> foldp newState state count) initialStates1
+        signals1 = createSignals $ -100
+        signals2 = createSignals $ -70
+        signals3 = createSignals $ -40
+        signals4 = createSignals $ -10
+        signals5 = createSignals $ 20
+        createSignals :: Double -> [SignalGen (Signal  InvaderState)]
+        createSignals yy = mapThem
+          where mapThem = map (\state -> foldp newState state count) initialStates
+                invaderPoss = map (\x -> (x, yy)) xposs
+                initialStates = map (\(x, y) -> InvaderState {ix = x, iy = y, stepsX = -2}) invaderPoss
         newState :: Int -> InvaderState -> InvaderState
         newState sampleCount state = state {ix = ix', iy = iy',
                                             stepsX = stepsX'}
