@@ -9,9 +9,9 @@ data CannonState = CannonState {cx :: Double, cy :: Double,
 data InvaderState = InvaderState {ix :: Double, iy :: Double, stepsX :: Int, color :: Color}
 
 
-cannonSignal :: Int -> SignalGen(Signal CannonState)
-cannonSignal winHeight = signal
-  where initialState = CannonState {cx = 0, cy = realToFrac winHeight / 2 * 0.8,
+cannonSignal :: SignalGen(Signal CannonState)
+cannonSignal = signal
+  where initialState = CannonState {cx = 0, cy = 200,
                                     lx = 0, ly = 0, laserFlying = False}
         signal = foldp newState initialState (lift2 combine' Keyboard.arrows Keyboard.space)
         combine' :: (Int, Int) -> Bool -> ((Int, Int), Bool)
@@ -75,7 +75,7 @@ render cannonState invaderStates (w, h) =
 
 main :: IO ()
 main = do
-  run config $ render <~ (cannonSignal winHeight) ~~ invaderSignal ~~ Window.dimensions
+  run config $ render <~ cannonSignal ~~ invaderSignal ~~ Window.dimensions
   where config = defaultConfig {windowTitle = "space_invaders",
                                 windowDimensions = (winWidth, winHeight)}
         (winWidth, winHeight) = (500, 500)
