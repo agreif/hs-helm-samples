@@ -30,4 +30,4 @@ main = run config $ render <~ stepper1 ~~ stepper2 ~~ Window.dimensions
         state2 = State {mx = 0, my = 100}
         stepper1 = foldp step1 state1 Keyboard.arrows
         stepper2 = foldp step2 state2 Keyboard.keysDown
-                           
+
