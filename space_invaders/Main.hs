@@ -6,8 +6,7 @@ import FRP.Elerea.Simple
 data CannonState = CannonState {cx :: Double, cy :: Double,
                                 lx :: Double, ly :: Double, laserFlying :: Bool}
 
-data EnemyDirection = ToLeft | ToRight
-data InvaderState = InvaderState {ix :: Double, iy :: Double, direction :: EnemyDirection, stepsX :: Int}
+data InvaderState = InvaderState {ix :: Double, iy :: Double, stepsX :: Int}
 
 
 cannonSignal :: Int -> SignalGen(Signal CannonState)
@@ -28,7 +27,7 @@ cannonSignal winHeight = signal
 
 invaderSignal :: SignalGen(Signal InvaderState)
 invaderSignal = signal
-  where initialState = InvaderState {ix = -100, iy = -100, direction = ToRight, stepsX = -2}
+  where initialState = InvaderState {ix = -100, iy = -100, stepsX = -2}
         signal = foldp newState initialState count
         newState :: Int -> InvaderState -> InvaderState
         newState sampleCount state = state {ix = ix', iy = iy',
