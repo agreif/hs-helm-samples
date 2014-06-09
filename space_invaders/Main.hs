@@ -25,10 +25,12 @@ cannonSignal winHeight = signal
                     | otherwise = cx'
                 ly' = if laserFlying' then ly state + 1 else 0
 
-invaderSignal :: SignalGen(Signal InvaderState)
-invaderSignal = signal
-  where initialState = InvaderState {ix = -100, iy = -100, stepsX = -2}
-        signal = foldp newState initialState count
+invaderSignal :: SignalGen(Signal [InvaderState])
+invaderSignal = combine signals
+  where xposs = [-210, -180, -150, -120, -90, -60, -30, 0, 30, 60]
+        invader1Poss = map (\x -> (x, -100)) xposs
+        initialStates1 = map (\(x, y) -> InvaderState {ix = x, iy = y, stepsX = -2}) invader1Poss
+        signals = map (\state -> foldp newState state count) initialStates1
         newState :: Int -> InvaderState -> InvaderState
         newState sampleCount state = state {ix = ix', iy = iy',
                                             stepsX = stepsX'}
@@ -58,11 +60,11 @@ laserForm cannonState = move (lx', ly') $ filled white $ rect 2 10
 invaderForm :: InvaderState -> Form
 invaderForm invaderState = move (ix invaderState, iy invaderState) $ filled white $ rect 20 20
 
-render :: CannonState -> InvaderState -> (Int, Int) -> Element
-render cannonState invaderState (w, h) =
+render :: CannonState -> [InvaderState] -> (Int, Int) -> Element
+render cannonState invaderStates (w, h) =
   centeredCollage w h $ [cannonForm cannonState,
-                         laserForm cannonState,
-                         invaderForm invaderState]
+                         laserForm cannonState]
+                         ++ map (\invaderState -> invaderForm invaderState) invaderStates
 
 main :: IO ()
 main = do
