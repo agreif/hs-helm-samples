@@ -6,7 +6,7 @@ import FRP.Elerea.Simple
 data CannonState = CannonState {cx :: Double, cy :: Double,
                                 lx :: Double, ly :: Double, laserFlying :: Bool}
 
-data InvaderState = InvaderState {ix :: Double, iy :: Double, stepsX :: Int}
+data InvaderState = InvaderState {ix :: Double, iy :: Double, stepsX :: Int, color :: Color}
 
 
 cannonSignal :: Int -> SignalGen(Signal CannonState)
@@ -28,16 +28,16 @@ cannonSignal winHeight = signal
 invaderSignal :: SignalGen(Signal [InvaderState])
 invaderSignal = combine $ signals1 ++ signals2 ++ signals3 ++ signals4 ++ signals5
   where xposs = [-210, -180, -150, -120, -90, -60, -30, 0, 30, 60]
-        signals1 = createSignals $ -100
-        signals2 = createSignals $ -70
-        signals3 = createSignals $ -40
-        signals4 = createSignals $ -10
-        signals5 = createSignals $ 20
-        createSignals :: Double -> [SignalGen (Signal  InvaderState)]
-        createSignals yy = mapThem
+        signals1 = createSignals (-100, red)
+        signals2 = createSignals (-70, blue)
+        signals3 = createSignals (-40, blue)
+        signals4 = createSignals (-10, green)
+        signals5 = createSignals (20, green)
+        createSignals :: (Double, Color) -> [SignalGen (Signal  InvaderState)]
+        createSignals (yy, color) = mapThem
           where mapThem = map (\state -> foldp newState state count) initialStates
                 invaderPoss = map (\x -> (x, yy)) xposs
-                initialStates = map (\(x, y) -> InvaderState {ix = x, iy = y, stepsX = -2}) invaderPoss
+                initialStates = map (\(x, y) -> InvaderState {ix = x, iy = y, color = color, stepsX = -2}) invaderPoss
         newState :: Int -> InvaderState -> InvaderState
         newState sampleCount state = state {ix = ix', iy = iy',
                                             stepsX = stepsX'}
@@ -65,7 +65,7 @@ laserForm cannonState = move (lx', ly') $ filled white $ rect 2 10
         ly' = cy cannonState - 15 - ly cannonState
 
 invaderForm :: InvaderState -> Form
-invaderForm invaderState = move (ix invaderState, iy invaderState) $ filled white $ rect 20 20
+invaderForm invaderState = move (ix invaderState, iy invaderState) $ filled (color invaderState) $ rect 20 20
 
 render :: CannonState -> [InvaderState] -> (Int, Int) -> Element
 render cannonState invaderStates (w, h) =
