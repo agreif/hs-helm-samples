@@ -1,7 +1,7 @@
 space_invaders
 ==============
 
-small and simple space inavders game.
+small and simple space invaders game.
 
 The cannon can be controlled with the arrow keys and the space bar shoots a laser.
 Currently the laser does not stop at the first hit, but kills all enemies on its way :)
