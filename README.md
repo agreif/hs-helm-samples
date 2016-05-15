@@ -36,3 +36,7 @@ Haskell
     cabal sandbox init
     cabal install gtk2hs-buildtools
     cabal install
+
+BTW: On OpenBSD (5.9) I get the following error:
+
+    SDLCallFailed {sdlExceptionCaller = "SDL.Init.init", sdlFunction = "SDL_Init", sdlExceptionError = "No available video device"}
