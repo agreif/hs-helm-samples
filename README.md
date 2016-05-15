@@ -4,8 +4,23 @@ hs-helm-samples
 Example/small/test games written with the [Haskell](http://www.haskell.org/) [Helm](http://helm-engine.org) reactive game engine.
 
 
+Installation (Mac OS X with MacPorts)
+=======================
+
+Libraries
+
+    sudo port install cairo-devel
+    sudo port install pango-devel
+    sudo port install libsdl2
+    
+Haskell
+
+    git clone https://github.com/z0w0/helm.git
+    cd helm/
+    stack install
+
 Installation (OpenBSD)
-============
+======================
 
 Libraries
 
